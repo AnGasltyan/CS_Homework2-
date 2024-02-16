@@ -1,0 +1,108 @@
+using System;
+
+namespace knight_placement
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[,] template = {
+                {2,3,4,4,4,4,3,2 },
+                {3,4,6,6,6,6,4,3 },
+                {4,6,8,8,8,8,6,4 },
+                {4,6,8,8,8,8,6,4 },
+                {4,6,8,8,8,8,6,4 },
+                {4,6,8,8,8,8,6,4 },
+                {3,4,6,6,6,6,4,3 },
+                {2,3,4,4,4,4,3,2 }
+            };
+            int[,] board = new int[8, 8];
+
+            Console.Write("Row: ");
+            int x = int.Parse(Console.ReadLine());
+            Console.Write("Colomn: ");
+            int y = int.Parse(Console.ReadLine());
+
+            board[x, y] = 5;
+
+            DisplayBoard(template);
+
+            bool t;
+            do
+            {
+                t = false;
+
+                DisplayKnightMoves(board);
+
+                int min = 9;
+                int mini = 0, minj = 0;
+
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (((x - i == 2 || i - x == 2) && (y - j == 1 || j - y == 1) || (x - i == 1 || i - x == 1) && (y - j == 2 || j - y == 2)) && board[i, j] != 3)
+                        {
+                            if (template[i, j] < min)
+                            {
+                                min = template[i, j];
+                                t = true;
+                                mini = i;
+                                minj = j;
+                            }
+                        }
+                    }
+                }
+
+                board[mini, minj] = 5;
+                x = mini;
+                y = minj;
+                template[x, y]--;
+                Console.WriteLine("**********************");
+
+            } while (t);
+        }
+
+        static void DisplayBoard(int[,] matrix)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            for (int i = 0; i < 8; i++)
+            {
+                Console.SetCursorPosition(20, i);
+                for (int j = 0; j < 8; j++)
+                {
+                    Console.Write(matrix[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+            Console.ResetColor();
+            Console.SetCursorPosition(0, 2);
+            Console.WriteLine();
+            Console.ReadLine(); // Wait for user to press Enter
+        }
+
+        static void DisplayKnightMoves(int[,] board)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (board[i, j] == 5)
+                    {
+                        Console.Write(board[i, j] + " ");
+                        board[i, j] = 3;
+                    }
+                    else if (board[i, j] == 3)
+                    {
+                        Console.Write(board[i, j] + " ");
+                    }
+                    else
+                    {
+                        Console.Write(board[i, j] + " ");
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
+    }
+}
